@@ -7,9 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.158",
@@ -23,7 +21,6 @@
     "node": "24.22.3"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^4.2.0",
-    "eslint": "^10.15.0"
+    "@nuxt/devtools": "^4.2.0"
   }
 }
