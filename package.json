@@ -23,6 +23,7 @@
     "node": "24.22.3"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^4.2.0"
+    "@nuxt/devtools": "^4.2.0",
+    "@types/node": "^26.6.6"
   }
 }
