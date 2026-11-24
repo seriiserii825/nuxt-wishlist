@@ -4,8 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
   runtimeConfig: {
-    // Session cookie is sealed with a secret derived from NUXT_APP_SECRET
-    // (nuxt-auth-utils >= 0.6 ignores session.password).
+    databaseUrl: "file:local.db",
     session: {
       maxAge: 60 * 60 * 24 * 7, // 7 days
     },
