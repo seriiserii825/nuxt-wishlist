@@ -1,9 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  useHead({
+    titleTemplate: (title) => (title ? `${title} - Wishlist` : "Wishlist"),
+  });
+</script>
 
 <template>
   <UApp>
     <NuxtRouteAnnouncer />
-    <AppHeader />
-    <NuxtPage />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </UApp>
 </template>

@@ -7,6 +7,7 @@
       </NuxtLink>
       <div class="flex items-center gap-2">
         <UButton to="/lists" label="My whishlists" variant="ghost" />
+        <UColorModeButton />
       </div>
     </UContainer>
   </header>
