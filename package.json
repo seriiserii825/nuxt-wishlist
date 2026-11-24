@@ -21,7 +21,8 @@
     "nuxt-auth-utils": "^0.6.2",
     "tailwindcss": "^4.3.5",
     "vue": "^3.5.45",
-    "vue-router": "^5.4.0"
+    "vue-router": "^5.4.0",
+    "zod": "^4.6.7"
   },
   "engines": {
     "node": "24.22.3"
