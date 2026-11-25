@@ -32,4 +32,4 @@ export const giftSchema = z.object({
     .transform((value) => value || null),
 });
 
-export type GiftSchema = z.input<typeof giftSchema>;
+export type GiftFormState = z.input<typeof giftSchema>;
