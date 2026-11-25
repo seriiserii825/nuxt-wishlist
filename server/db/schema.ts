@@ -26,3 +26,19 @@ export const wishlists = sqliteTable(
   },
   (table) => [index("wishlists_user_id_idx").on(table.userId)]
 );
+
+export const gifts = sqliteTable(
+  "gifts",
+  {
+    id: integer().primaryKey({ autoIncrement: true }),
+    wishlistId: integer()
+      .notNull()
+      .references(() => wishlists.id, { onDelete: "cascade" }),
+    title: text().notNull(),
+    url: text(),
+    price: integer(),
+    note: text(),
+    createdAt: createdAt(),
+  },
+  (table) => [index("gifts_wishlist_id_idx").on(table.wishlistId)]
+);
