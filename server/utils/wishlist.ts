@@ -20,3 +20,26 @@ export async function requireOwnWishlist(event: H3Event) {
   }
   return wishlist;
 }
+
+export async function requireWishlistBySlug(event: H3Event) {
+  const slug = getRouterParam(event, "slug") ?? "";
+
+  const wishlist = await db
+    .select()
+    .from(tables.wishlists)
+    .where(eq(tables.wishlists.slug, slug))
+    .get();
+
+  if (!wishlist) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: "Wishlist not found",
+    });
+  }
+  return wishlist;
+}
+
+export async function isWishlistOwner(event: H3Event, wishlist: { userId: number }) {
+  const { user } = await getUserSession(event);
+  return user?.id === wishlist.userId;
+}
