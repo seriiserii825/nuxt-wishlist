@@ -70,6 +70,32 @@
       showToastError(error, "Failed to save gift");
     }
   }
+
+  const giftToDelete = ref<Gift>();
+  const giftDeleteOpen = computed({
+    get: () => Boolean(giftToDelete.value),
+    set: (open) => {
+      if (!open) {
+        giftToDelete.value = undefined;
+      }
+    },
+  });
+
+  async function deleteGift() {
+    if (!giftToDelete.value) return;
+    deleting.value = true;
+    try {
+      await $fetch(`${apiUrl}/gifts/${giftToDelete.value.id}`, {
+        method: "DELETE",
+      });
+      await refresh();
+    } catch (error) {
+      showToastError(error, "Failed to delete gift");
+    } finally {
+      deleting.value = false;
+      giftToDelete.value = undefined;
+    }
+  }
 </script>
 <template>
   <UContainer class="py-8" v-if="wishlist">
@@ -128,6 +154,14 @@
               size="sm"
               @click="openGiftForm(gift)"
             />
+            <UButton
+              icon="i-lucide-trash-2"
+              label="Delete"
+              color="error"
+              variant="soft"
+              size="sm"
+              @click="giftToDelete = gift"
+            />
           </div>
         </UCard>
       </li>
@@ -154,6 +188,18 @@
     >
       <template #body>
         <GiftForm :gift="editGift" @submit="saveGift" />
+      </template>
+    </UModal>
+
+    <UModal
+      v-model:open="giftDeleteOpen"
+      title="Delete gift"
+      :description="`Are you sure you want to delete the gift '${giftToDelete?.title}'? This action cannot be undone.`"
+      :ui="{ footer: 'justify-end' }"
+    >
+      <template #footer>
+        <UButton label="Cancel" color="neutral" variant="soft" @click="giftDeleteOpen = false" />
+        <UButton label="Delete" color="error" :loading="deleting" @click="deleteGift" />
       </template>
     </UModal>
   </UContainer>
