@@ -15,9 +15,8 @@
 
   async function create() {
     try {
-      await $fetch("/api/wishlists", { method: "POST", body: state });
-      state.title = "";
-      await refresh();
+      const wishlist = await $fetch("/api/wishlists", { method: "POST", body: state });
+      return navigateTo(`/lists/${wishlist.id}`);
     } catch (error) {
       const message =
         (error as { data?: { message?: string } }).data?.message || "Something went wrong";
@@ -26,7 +25,7 @@
   }
 </script>
 <template>
-  <UContainer>
+  <UContainer class="py-8">
     <h1 class="font-2xl text-semibold">My wishlist</h1>
     <p>Hello, {{ user?.name }}</p>
     <UForm
@@ -49,7 +48,9 @@
     />
     <ul v-else class="mt-8 flex flex-col gap-4">
       <li v-for="wishlist in wishlists" :key="wishlist.id">
-        <UCard>{{ wishlist.title }}</UCard>
+        <NuxtLink :to="`/lists/${wishlist.id}`" class="block">
+          <UCard class="transition hover:bg-elevated">{{ wishlist.title }}</UCard>
+        </NuxtLink>
       </li>
     </ul>
   </UContainer>
