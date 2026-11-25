@@ -7,7 +7,6 @@
   });
 
   const { user } = useUserSession();
-  const toast = useToast();
   const { data: wishlists, refresh } = await useFetch("/api/wishlists");
   const state = reactive({
     title: "",
@@ -18,9 +17,7 @@
       const wishlist = await $fetch("/api/wishlists", { method: "POST", body: state });
       return navigateTo(`/lists/${wishlist.id}`);
     } catch (error) {
-      const message =
-        (error as { data?: { message?: string } }).data?.message || "Something went wrong";
-      toast.add({ title: message || "Something went wrong", color: "error" });
+      showToastError(error, "Failed to create wishlist");
     }
   }
 </script>

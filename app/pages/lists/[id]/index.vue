@@ -3,9 +3,10 @@
     middleware: "auth",
   });
   const route = useRoute();
-  const toast = useToast();
 
-  const { data: wishlist, error } = await useFetch(`/api/wishlists/${route.params.id}`);
+  const apiUrl = `/api/wishlists/${route.params.id}` as const;
+
+  const { data: wishlist, error, refresh } = await useFetch(apiUrl);
 
   if (error.value) {
     throw createError({
@@ -24,17 +25,49 @@
   async function deleteWishlist() {
     deleting.value = true;
     try {
-      await $fetch(`/api/wishlists/${route.params.id}`, {
+      await $fetch(apiUrl, {
         method: "DELETE",
       });
       navigateTo("/lists");
     } catch (error) {
-      const message =
-        (error as { data?: { message?: string } })?.data?.message || "Failed to delete wishlist";
-      toast.add({
-        title: message ?? "Error",
-        color: "error",
-      });
+      showToastError(error, "Failed to delete wishlist");
+    } finally {
+      deleting.value = false;
+      deleteOpen.value = false;
+    }
+  }
+
+  type Gift = NonNullable<typeof wishlist.value>["gifts"][number];
+
+  function storeName(url: string): string {
+    return new URL(url).hostname.replace("www.", "");
+  }
+
+  const giftFormOpen = ref(false);
+  const editGift = ref<Gift>();
+
+  function openGiftForm(gift?: Gift) {
+    editGift.value = gift;
+    giftFormOpen.value = true;
+  }
+
+  async function saveGift(gift: GiftFormState) {
+    try {
+      if (editGift.value) {
+        await $fetch(`${apiUrl}/gifts/${editGift.value.id}`, {
+          method: "PATCH",
+          body: gift,
+        });
+      } else {
+        await $fetch(`${apiUrl}/gifts`, {
+          method: "POST",
+          body: gift,
+        });
+      }
+      giftFormOpen.value = false;
+      await refresh();
+    } catch (error) {
+      showToastError(error, "Failed to save gift");
     }
   }
 </script>
