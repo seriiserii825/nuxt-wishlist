@@ -22,9 +22,10 @@ export const wishlists = sqliteTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     title: text().notNull(),
+    slug: text().notNull().unique(),
     createdAt: createdAt(),
   },
-  (table) => [index("wishlists_user_id_idx").on(table.userId)]
+  (table) => [index("wishlists_user_id_idx").on(table.userId)],
 );
 
 export const gifts = sqliteTable(
@@ -38,7 +39,8 @@ export const gifts = sqliteTable(
     url: text(),
     price: integer(),
     note: text(),
+    reservationToken: text().unique(),
     createdAt: createdAt(),
   },
-  (table) => [index("gifts_wishlist_id_idx").on(table.wishlistId)]
+  (table) => [index("gifts_wishlist_id_idx").on(table.wishlistId)],
 );
