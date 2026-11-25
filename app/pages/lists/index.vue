@@ -47,7 +47,7 @@
       title="Now is empty"
       description="Soon will be wishlist"
     />
-    <ul v-else class="mt-8">
+    <ul v-else class="mt-8 flex flex-col gap-4">
       <li v-for="wishlist in wishlists" :key="wishlist.id">
         <UCard>{{ wishlist.title }}</UCard>
       </li>
